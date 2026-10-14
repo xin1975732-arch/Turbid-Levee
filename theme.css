@@ -1,0 +1,212 @@
+/* 浊堤 · theme.css —— 只属于这本书的颜色、字体和版式
+   底色三种：lv 浅绿羊皮纸（默认，不跟系统深浅色走）· yang 黄羊皮 · ye 夜灯
+   版式：冷，收着。不用贴纸和硬阴影；章号是朱印，章名竖排，抄录的文书用楷体加一道朱线。 */
+
+/* ---------- 浅绿羊皮纸（默认） ---------- */
+:root {
+  --bg: #DAEBD0; --bg-2: #CDE2C1; --ink: #1F2E1C; --ink-2: #4A5F43; --ink-3: #6F8566; --rule: #B3CDA6;
+  --acc: #96382B; --acc-ink: #84301F; --acc2: #6F8566; --acc2-ink: #4A5F43;
+  --hi: #E8D48A; --on-hi: #1F2E1C; --alt: #2E4A6B; --alt-ink: #2E4A6B; --ok: #4E7A45;
+  --zhu: #96382B; --zhu-line: rgba(150, 56, 43, .40);
+  --on-acc: #EDF5E6; --paper: #E4F1DC; --panel: #E4F1DC; --bar: rgba(218, 235, 208, .9);
+  --msg-l: #CDE2C1; --msg-r: #CDE2C1; --sel: rgba(150, 56, 43, .16); --hard: #8FA884;
+  --shadow: 0 18px 40px -18px rgba(20, 45, 20, .45); --glow: rgba(0, 0, 0, 0);
+  --chao: #CBE1BE; --vig: rgba(52, 92, 40, .18); --grain: .26; --water: #9C8A55;
+  --scene-1: rgba(38, 70, 46, .34); --scene-2: rgba(38, 70, 46, .2); --scene-3: #96382B; --scene-4: #2E4A6B;
+
+  /* 书封（不随底色变）：磁青纸、题签、白丝线 */
+  --c-cover: #22304A; --c-cover-2: #18233A; --c-label: #EDE1C3; --c-label-ink: #2A2117; --c-thread: #E9E0C8;
+
+  --display: "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+  --hand: "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", "Noto Serif SC", serif;
+  color-scheme: light;
+}
+
+/* ---------- 黄羊皮 ---------- */
+:root[data-read="yang"] {
+  --bg: #EFE2C2; --bg-2: #E6D5AE; --ink: #3A2E20; --ink-2: #6C5940; --ink-3: #937C5B; --rule: #D4BF95;
+  --acc: #9C3226; --acc-ink: #84291E; --acc2: #937C5B; --acc2-ink: #6C5940;
+  --hi: #E9C46A; --on-hi: #3A2E20; --ok: #6B7B3A;
+  --zhu: #9C3226; --zhu-line: rgba(156, 50, 38, .42);
+  --on-acc: #F6ECD3; --paper: #F5EBD3; --panel: #F5EBD3; --bar: rgba(239, 226, 194, .9);
+  --msg-l: #E6D5AE; --msg-r: #E6D5AE; --sel: rgba(156, 50, 38, .18); --hard: #B9A27A;
+  --shadow: 0 18px 40px -18px rgba(60, 38, 10, .5);
+  --chao: #E6D4AA; --vig: rgba(128, 84, 30, .20); --grain: .30; --water: #9C7E45;
+  --scene-1: rgba(92, 70, 40, .34); --scene-2: rgba(92, 70, 40, .2); --scene-3: #9C3226;
+  color-scheme: light;
+}
+
+/* ---------- 夜灯 ---------- */
+:root[data-read="ye"] {
+  --bg: #16140F; --bg-2: #1C1913; --ink: #C3B89E; --ink-2: #91876F; --ink-3: #6E6554; --rule: #332E25;
+  --acc: #C45E4C; --acc-ink: #D9806E; --acc2: #6E6554; --acc2-ink: #91876F;
+  --hi: #7A6431; --on-hi: #F0E6CF; --alt: #8DA6C8; --alt-ink: #A9BED9; --ok: #8DAA7A;
+  --zhu: #C45E4C; --zhu-line: rgba(196, 94, 76, .45);
+  --on-acc: #1A1611; --paper: #221E17; --panel: #221E17; --bar: rgba(22, 20, 15, .9);
+  --msg-l: #221E17; --msg-r: #221E17; --sel: rgba(196, 94, 76, .25); --hard: #4A4336;
+  --shadow: 0 18px 40px -18px rgba(0, 0, 0, .8); --glow: rgba(214, 160, 80, .09);
+  --chao: #1F1C15; --vig: rgba(0, 0, 0, .35); --grain: 0; --water: #6B5A33;
+  --scene-1: rgba(196, 204, 214, .22); --scene-2: rgba(196, 204, 214, .12); --scene-3: #C45E4C; --scene-4: #8DA6C8;
+  color-scheme: dark;
+}
+
+/* ---------- 纸：灯下一团暖光、四角压暗、纸纹 ---------- */
+body::before {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 8%, var(--glow), rgba(0, 0, 0, 0) 72%),
+    radial-gradient(ellipse 120% 100% at 50% 45%, rgba(0, 0, 0, 0) 55%, var(--vig) 100%);
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25  0 0 0 0 .2  0 0 0 0 .12  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .09' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3  0 0 0 0 .24  0 0 0 0 .14  0 0 0 .35 -.05'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ---------- 顶栏、面板、抽屉：细线，不要硬阴影 ---------- */
+.bar-mark { font-weight: 900; color: var(--ink); text-shadow: none; font-size: 18px; letter-spacing: .3em; }
+.panel { border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); }
+.sheet { border: 1px solid var(--rule); border-bottom: 0; box-shadow: 0 -12px 40px -16px rgba(0, 0, 0, .35); }
+@media (min-width: 760px) { .sheet { border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow); } }
+.sheet-h h2 { font-weight: 600; }
+.btn-s.pri, .btn-s.pri:hover { box-shadow: none; transform: none; }
+.switch[aria-checked="true"] { background: var(--bg-2); }
+
+/* ---------- 章首：雨、朱印、竖排章名 ---------- */
+.ch-head { min-height: clamp(380px, 60vh, 620px); padding-block: 48px 72px; }
+.ch-head canvas.scene {
+  top: 0; height: 100%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+}
+.ch-head-in { display: flex; flex-direction: row; align-items: flex-end; gap: 16px; text-align: left; }
+.ch-head-in .tag { order: 1; }
+.ch-head-in .ch-title { order: 2; }
+.ch-head-in .ch-no { order: 3; align-self: flex-start; }
+.tag {
+  display: grid;
+  place-items: center;
+  min-width: 46px;
+  padding: 7px 7px;
+  margin-bottom: 6px;
+  background: var(--acc);
+  color: var(--on-acc);
+  border: 0;
+  border-radius: 3px 4px 2px 5px;
+  box-shadow: inset 0 0 0 2px var(--acc), inset 0 0 0 3px var(--on-acc);
+  transform: rotate(-3deg);
+  font-family: var(--display);
+}
+.tag small { display: none; }
+.tag b { writing-mode: vertical-rl; font-weight: 900; font-size: 22px; line-height: 1; letter-spacing: .05em; }
+.ch-no { writing-mode: vertical-rl; margin: 0; padding-top: .4em; font-size: 15px; letter-spacing: .5em; text-indent: 0; color: var(--ink-3); }
+.ch-title {
+  writing-mode: vertical-rl;
+  font-weight: 900;
+  font-size: clamp(46px, 11vw, 76px);
+  letter-spacing: .22em;
+  text-indent: 0;
+  text-shadow: none;
+  color: var(--ink);
+}
+.ch-meta span { background: transparent; color: var(--ink-3); }
+
+/* ---------- 正文：抄录的文书、竹纸、批语 ---------- */
+.text p.chao {
+  text-indent: 0;
+  margin: 1em 0 1.1em;
+  padding: .5em 1em .5em 1.1em;
+  background: var(--chao);
+  border-left: 2px solid var(--zhu-line);
+  font-family: var(--kai);
+  letter-spacing: .08em;
+  line-height: 1.95;
+}
+.text p.chao:has(+ p.chao) { margin-bottom: 0; padding-bottom: .15em; }
+.text p.chao + p.chao { margin-top: 0; padding-top: .15em; }
+
+/* ---------- 章末、翻章 ---------- */
+.ch-end svg { width: 26px; height: 16px; color: var(--ink-3); }
+.ch-end .fin { font-weight: 900; font-size: 18px; letter-spacing: .6em; color: var(--acc); text-shadow: none; }
+.ch-nav a { border: 1px solid var(--rule); border-radius: 10px; background: transparent; box-shadow: none; }
+.ch-nav a:hover { transform: none; box-shadow: none; border-color: var(--zhu-line); background: var(--bg-2); }
+
+/* ---------- 宽屏右侧：水位 ---------- */
+.gauge .g-t b { font-weight: 900; color: var(--ink-2); }
+.gauge .g-col { border: 1px solid var(--rule); border-radius: 2px; width: 14px; }
+.gauge .g-col i { background: linear-gradient(0deg, var(--water), rgba(0, 0, 0, 0) 160%); opacity: .75; }
+
+/* ---------- 书封：线装书，磁青纸面 ---------- */
+.hero { padding-block: 48px 64px; }
+.hero-rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%); }
+:root[data-wave="off"] .hero-rain { display: none; }
+.cover {
+  width: min(64vw, 290px);
+  aspect-ratio: 5 / 7;
+  border: 0;
+  border-radius: 2px 5px 5px 2px;
+  transform: none;
+  background: var(--c-cover);
+  box-shadow: var(--shadow), 6px 0 0 -2px var(--c-label), 7px 0 0 -2px rgba(0, 0, 0, .25), 10px 2px 0 -3px var(--c-label);
+}
+.series { background: none; border: 0; padding: 0; color: var(--ink-3); font-size: 12px; letter-spacing: .5em; }
+.wordmark {
+  font-weight: 900;
+  font-size: clamp(60px, 15vw, 104px);
+  letter-spacing: .3em;
+  color: var(--ink);
+  text-shadow: none;
+}
+.epi blockquote { color: var(--ink-2); }
+.blurb { color: var(--ink-2); }
+.btn { border-width: 1px; }
+.btn-primary { background: var(--acc); border-color: var(--acc); color: var(--on-acc); box-shadow: none; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: none; }
+.btn-ghost { border-color: var(--rule); color: var(--ink-2); }
+.btn-ghost:hover { border-color: var(--zhu-line); color: var(--ink); }
+
+/* ---------- 目录：账簿大写数字 ---------- */
+.mulu h2 { font-weight: 900; font-size: 28px; letter-spacing: 1em; text-indent: 1em; }
+.toc a { grid-template-columns: 3.2em auto 1fr auto; padding: 13px 4px; border-bottom: 1px dashed var(--rule); }
+.toc-no { display: block; height: auto; border: 0; border-radius: 0; background: none; color: var(--acc); font-family: var(--serif); font-weight: 600; font-size: 15px; letter-spacing: .1em; }
+.toc a:hover .toc-no { transform: none; }
+.toc a:hover .toc-t { color: var(--acc); }
+.toc-tag { color: var(--acc); background: none; border: 1px solid var(--zhu-line); border-radius: 3px; padding: 0 4px 0 6px; line-height: 1.7; }
+.toc a.done .toc-m::before { color: var(--ink-3); }
+
+/* ---------- 三部曲导航 ---------- */
+.sn-b { border: 1px solid var(--rule); border-radius: 6px; background: transparent; font-weight: 600; }
+a.sn-b:hover { background: var(--bg-2); border-color: var(--zhu-line); }
+.sn-b.cur { background: var(--acc); border-color: var(--acc); color: var(--on-acc); box-shadow: none; }
+
+/* ---------- 功能页（人物、时间线、书房……） ---------- */
+.vw-h h1 { font-weight: 900; color: var(--ink); text-shadow: none; letter-spacing: .3em; }
+.seltb, .paramenu { box-shadow: var(--shadow); }
+.bub { border: 1px solid var(--rule); box-shadow: none; }
+.pchip, .pchip.g-mg, .pchip.g-old { border: 1px solid var(--rule); border-radius: 8px; box-shadow: none; }
+.pchip:hover { transform: none; border-color: var(--zhu-line); background: var(--bg-2); }
+.me-h .av { border: 1px solid var(--rule); box-shadow: none; }
+
+/* ---------- 书封：上下排，书在上，扉页那句在下，不要大字书名和简介 ---------- */
+.hero-in, .hero-in { grid-template-columns: none !important; justify-items: center !important; text-align: center !important; gap: 26px; }
+.hero-text { justify-items: center; gap: 18px; }
+.hero-text .wordmark, .hero-text .blurb { display: none; }
+.hero-text .epi { order: 1; }
+.hero-text .series { order: 2; }
+.hero-text .cta { order: 3; justify-content: center; }
+.hero-text .quick { order: 4; }
+.epi figcaption { justify-self: end; }
+.epi blockquote { font-size: clamp(16px, 4.3vw, 19px); letter-spacing: .14em; }
+
+/* ---------- 分节：三点，淡墨夹一点朱 ---------- */
+.brk { margin: 1.8em 0 1.7em; gap: 14px; }
+.brk i { width: 5px; height: 5px; }
+.brk i:nth-child(1), .brk i:nth-child(3) { background: var(--ink-3); opacity: .7; }
+.brk i:nth-child(2) { background: var(--acc); }
