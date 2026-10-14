@@ -1273,8 +1273,8 @@
 
       var tabs = el("div", { class: "seg big", role: "tablist" });
       var pane = el("div", { class: "pane" });
-      var TAB = [["hl", "划线与批注"], ["bm", "书签"], ["cm", "我的评论"]];
-      var curTab = R.get("shelfTab") || "hl";
+      var TAB = [["hl", "划线与批注"], ["bm", "书签"]];
+      var curTab = R.get("shelfTab") || "hl"; if (curTab === "cm") curTab = "hl";
       TAB.forEach(function (x) {
         var b = el("button", { type: "button", role: "tab", "aria-selected": x[0] === curTab ? "true" : "false", text: x[1] });
         b.addEventListener("click", function () { curTab = x[0]; R.set("shelfTab", curTab); tabs.querySelectorAll("button").forEach(function (y) { y.setAttribute("aria-selected", y === b ? "true" : "false"); }); drawPane(); });
@@ -1524,7 +1524,6 @@
     var links = [];
     if (PEOPLE.length) links.push(["#people", "人物"]);
     if (TL.length) links.push(["#timeline", "时间线"]);
-    links.push(["#reviews", "读后感"]);
     links.push(["#shelf", "我的书房"]);
     q.innerHTML = "";
     links.forEach(function (x) { q.appendChild(el("a", { class: "qk", href: x[0], text: x[1] })); });
