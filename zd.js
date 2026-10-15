@@ -13,12 +13,6 @@
     return String(n);
   }
 
-  R.on("view", function (name, arg, box) {
-    if (name !== "timeline" || !box) return;
-    var lede = box.querySelector(".vw-h .lede");
-    if (lede) lede.textContent = "从嘉靖二十二年两个生员同一天进衙门，到四十年十一月的头一场霜。还没读到的事先模糊着，点一下才显示。";
-  });
-
   R.on("chapter", function (n, v) {
     var b = v.querySelector(".ch-head .tag b");
     if (b) b.textContent = daxie(n);

@@ -210,6 +210,3 @@ a.sn-b:hover { background: var(--bg-2); border-color: var(--zhu-line); }
 .brk i { width: 5px; height: 5px; }
 .brk i:nth-child(1), .brk i:nth-child(3) { background: var(--ink-3); opacity: .7; }
 .brk i:nth-child(2) { background: var(--acc); }
-
-/* GitHub 版：不要评论和读后感 */
-.cmts, .bub-layer, .paramenu [data-a="cm"] { display: none !important; }

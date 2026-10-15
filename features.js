@@ -16,6 +16,7 @@
   var R = window.Reader;
   if (!R) return;
   var D = R.data, CH = R.chapters, N = CH.length, esc = R.esc, el = R.el, pad = R.pad;
+  var LOCAL = !!D.local; // 纯静态部署（如 GitHub Pages）：没有评论、读后感、读者页、后台
   var PEOPLE = (D.people && D.people.people) || [];
   var PBY = {};
   PEOPLE.forEach(function (p) { PBY[p.id] = p; });
@@ -424,8 +425,8 @@
     p.classList.add("picked");
     var has = L.bm.some(function (b) { return b.ch === n && b.p === pi; });
     var cnt = paraComments(n, pi).length;
-    pm.innerHTML = '<button type="button" data-a="bm">' + (has ? "取消书签" : "书签") + '</button><button type="button" data-a="cm">评论' + (cnt ? " " + cnt : "") +
-      '</button><button type="button" data-a="card">金句卡</button><button type="button" data-a="link">链接</button>';
+    pm.innerHTML = '<button type="button" data-a="bm">' + (has ? "取消书签" : "书签") + '</button>' + (LOCAL ? "" : '<button type="button" data-a="cm">评论' + (cnt ? " " + cnt : "") + '</button>') +
+      '<button type="button" data-a="card">金句卡</button><button type="button" data-a="link">链接</button>';
     pm.hidden = false;
     pmY = window.scrollY;
     var rc = p.getBoundingClientRect();
@@ -495,9 +496,9 @@
     cv.width = W; cv.height = H;
     var serif = cssVar("--serif", "serif"), display = cssVar("--display", serif);
     var pal;
-    if (tpl === "dark") pal = { bg: "#17121A", ink: "#F3E8DC", sub: "#B9A79A", acc: "#FF8547", acc2: "#6FA7FF", rule: "#3A2E3A" };
+    if (tpl === "dark") pal = { bg: "#16140F", ink: "#C3B89E", sub: "#91876F", acc: "#C45E4C", acc2: "#8DA6C8", rule: "#332E25" };
     else if (tpl === "art") pal = { bg: cssVar("--bg-2", "#FFE3D0"), ink: cssVar("--ink", "#3A1E17"), sub: cssVar("--ink-2", "#6B3F33"), acc: cssVar("--acc", "#FF6A2B"), acc2: cssVar("--alt", "#4D8EF7"), rule: cssVar("--hard", "#3A1E17") };
-    else pal = { bg: "#FBF8F2", ink: "#231C17", sub: "#7A6E64", acc: cssVar("--acc", "#C2410C"), acc2: "#231C17", rule: "#E4DACB" };
+    else pal = { bg: "#DAEBD0", ink: "#1F2E1C", sub: "#4A5F43", acc: "#96382B", acc2: "#1F2E1C", rule: "#B3CDA6" };
     ctx.fillStyle = pal.bg; ctx.fillRect(0, 0, W, H);
     if (tpl === "art") {
       ctx.strokeStyle = pal.rule; ctx.lineWidth = 6; ctx.strokeRect(48, 48, W - 96, H - 96);
@@ -513,7 +514,7 @@
       }
     } else if (tpl === "dark") {
       var g = ctx.createRadialGradient(W * .85, 0, 10, W * .85, 0, W);
-      g.addColorStop(0, "rgba(255,133,71,.22)"); g.addColorStop(1, "rgba(255,133,71,0)");
+      g.addColorStop(0, "rgba(150,56,43,.12)"); g.addColorStop(1, "rgba(150,56,43,0)");
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     } else {
       ctx.fillStyle = pal.acc; ctx.fillRect(120, 150, 64, 8);
@@ -882,7 +883,7 @@
     title: "时间线",
     render: function (box, arg) {
       var mr = R.maxRead();
-      box.innerHTML = '<header class="vw-h"><p class="kicker">' + esc(D.title) + '</p><h1>时间线</h1><p class="lede">从嘉靖年间的一页账，到民国的一条船，再到台风夜的一只冷箱。还没读到的事先模糊着，点一下才显示。</p></header>';
+      box.innerHTML = '<header class="vw-h"><p class="kicker">' + esc(D.title) + '</p><h1>时间线</h1><p class="lede">' + esc((D.timeline && D.timeline.lede) || '还没读到的事先模糊着，点一下才显示。') + '</p></header>';
       var tools = el("div", { class: "vw-tools" });
       var who = el("select", { id: "tlWho", "aria-label": "按人物" });
       who.appendChild(el("option", { value: "", text: "所有人物" }));
@@ -937,13 +938,13 @@
       sec.appendChild(ol);
       post.appendChild(sec);
     }
-    if (post) {
+    if (post && !LOCAL) {
       var cm = el("section", { class: "cmts", id: "comments", "aria-label": "评论" });
       post.appendChild(cm);
       var sort = R.get("cmSort") || "new";
       addLive(function () { renderChapterComments(cm, n, sort, function (s) { sort = s; R.set("cmSort", s); }); });
     }
-    addLive(function () { paintBubbles(n); });
+    if (!LOCAL) addLive(function () { paintBubbles(n); });
     void c;
   });
 
@@ -1155,7 +1156,7 @@
   /* =====================================================================
    * 读后感
    * ===================================================================== */
-  R.view("reviews", {
+  if (!LOCAL) R.view("reviews", {
     title: "读后感",
     render: function (box) {
       box.innerHTML = '<header class="vw-h"><p class="kicker">' + esc(D.title) + '</p><h1>读后感</h1><p class="lede">读完了，或者读到一半，写几句给后来的人看。每人一篇，可以改。</p></header>';
@@ -1250,8 +1251,8 @@
       box.appendChild(bar);
 
       var pv = el("section", { class: "privacy" });
-      box.appendChild(pv);
-      addLive(function () {
+      if (!LOCAL) box.appendChild(pv);
+      if (!LOCAL) addLive(function () {
         pv.innerHTML = "<h2>公开设置</h2>";
         var st = sharedState();
         if (st !== "ok") { pv.appendChild(el("p", { class: "tip", text: sharedNote() })); return; }
@@ -1274,7 +1275,8 @@
       var tabs = el("div", { class: "seg big", role: "tablist" });
       var pane = el("div", { class: "pane" });
       var TAB = [["hl", "划线与批注"], ["bm", "书签"]];
-      var curTab = R.get("shelfTab") || "hl"; if (curTab === "cm") curTab = "hl";
+      if (!LOCAL) TAB.push(["cm", "我的评论"]);
+      var curTab = R.get("shelfTab") || "hl";
       TAB.forEach(function (x) {
         var b = el("button", { type: "button", role: "tab", "aria-selected": x[0] === curTab ? "true" : "false", text: x[1] });
         b.addEventListener("click", function () { curTab = x[0]; R.set("shelfTab", curTab); tabs.querySelectorAll("button").forEach(function (y) { y.setAttribute("aria-selected", y === b ? "true" : "false"); }); drawPane(); });
@@ -1335,7 +1337,7 @@
     }
   });
 
-  R.view("reader", {
+  if (!LOCAL) R.view("reader", {
     title: "读者主页",
     render: function (box, id) {
       addLive(function () {
@@ -1386,7 +1388,7 @@
   /* =====================================================================
    * 作者后台
    * ===================================================================== */
-  R.view("admin", {
+  if (!LOCAL) R.view("admin", {
     title: "作者后台",
     render: function (box, arg) {
       box.innerHTML = '<header class="vw-h"><p class="kicker">' + esc(D.title) + '</p><h1>作者后台</h1><p class="lede">只有作者能看到这一页。统计只包括在 claude.ai 里打开、并且能写入数据的读者。</p></header>';
@@ -1524,6 +1526,7 @@
     var links = [];
     if (PEOPLE.length) links.push(["#people", "人物"]);
     if (TL.length) links.push(["#timeline", "时间线"]);
+    if (!LOCAL) links.push(["#reviews", "读后感"]);
     links.push(["#shelf", "我的书房"]);
     q.innerHTML = "";
     links.forEach(function (x) { q.appendChild(el("a", { class: "qk", href: x[0], text: x[1] })); });
