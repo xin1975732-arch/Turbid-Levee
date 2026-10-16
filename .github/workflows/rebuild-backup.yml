@@ -1,0 +1,44 @@
+# Keeps the backup copy of the book inside index.html in step with the
+# chapter and data files. Runs after every push to main that touches them
+# and commits the refreshed index.html (the commit doesn't retrigger this).
+name: Rebuild index.html backup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.md"
+      - "**.json"
+      - "index.html"
+      - "tools/rebuild_backup.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild-backup
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild backup
+        run: python3 tools/rebuild_backup.py
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "Backup already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898732+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Rebuild index.html backup from chapter and data files"
+          git pull --rebase origin main
+          git push origin HEAD:main
