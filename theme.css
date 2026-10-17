@@ -210,3 +210,9 @@ a.sn-b:hover { background: var(--bg-2); border-color: var(--zhu-line); }
 .brk i { width: 5px; height: 5px; }
 .brk i:nth-child(1), .brk i:nth-child(3) { background: var(--ink-3); opacity: .7; }
 .brk i:nth-child(2) { background: var(--acc); }
+
+/* ---------- 书封下面：简介 ---------- */
+.intro { max-width: 40em; margin: 0 auto; padding: 48px 16px 0; display: grid; justify-items: center; gap: 20px; }
+.intro-k { margin: 0; font-family: var(--sans); font-size: 13px; letter-spacing: .32em; text-indent: .32em; color: var(--ink-3); }
+.intro-b { max-width: 27em; text-align: justify; }
+.intro-b p { margin: 0 0 .6em; font-size: 16px; line-height: 1.95; letter-spacing: .03em; color: var(--ink-2); text-indent: 2em; }

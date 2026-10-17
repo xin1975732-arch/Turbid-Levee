@@ -57,4 +57,26 @@
     window.addEventListener("resize", onResize);
     stopRain = function () { if (raf) cancelAnimationFrame(raf); window.removeEventListener("resize", onResize); };
   });
+  /* 书封下面：简介（书封上不放简介，见 theme.css） */
+  R.on("home", function (v) {
+    var hero = v.querySelector(".hero"), b = v.querySelector(".hero-text .blurb");
+    var t = b ? b.textContent.trim() : "";
+    if (!hero || !t || v.querySelector(".intro")) return;
+    var sec = document.createElement("section");
+    sec.className = "intro";
+    sec.setAttribute("aria-label", "简介");
+    var k = document.createElement("p");
+    k.className = "intro-k";
+    k.textContent = "嘉靖四十年 · 浙西 · 中篇小说";
+    var box = document.createElement("div");
+    box.className = "intro-b";
+    t.split("\n").forEach(function (s) {
+      if (!s.trim()) return;
+      var p = document.createElement("p");
+      p.textContent = s.trim();
+      box.appendChild(p);
+    });
+    sec.appendChild(k); sec.appendChild(box);
+    hero.parentNode.insertBefore(sec, hero.nextSibling);
+  });
 })();
