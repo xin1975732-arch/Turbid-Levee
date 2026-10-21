@@ -95,7 +95,7 @@
     delete D.chao;
     box.textContent = JSON.stringify(D);
     window.READER_WAIT = true;   // 等 features.js 加载完再启动
-    return load("reader.js").then(function () { return load("zd.js"); }).then(function () { return load("features.js"); });
+    return load("reader.js?v=flow1").then(function () { return load("zd.js"); }).then(function () { return load("features.js"); });
   }
 
   Promise.all([opt("data/book.json", "json"), opt("data/characters.json", "json"), opt("data/timeline.json", "json"), opt("data/recaps.json", "json")]).then(function (r) {
