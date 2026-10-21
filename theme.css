@@ -78,7 +78,7 @@ body::after {
 .switch[aria-checked="true"] { background: var(--bg-2); }
 
 /* ---------- 章首：雨、朱印、竖排章名 ---------- */
-.ch-head { min-height: clamp(380px, 60vh, 620px); padding-block: 48px 72px; }
+.ch-head { min-height: clamp(260px, 34vh, 420px); padding-block: 28px 52px; }
 .ch-head canvas.scene {
   top: 0; height: 100%;
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
