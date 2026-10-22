@@ -1,8 +1,9 @@
 /* 《浊堤》分章加载 loader.js
- * 正文在 chapters/ch01.md … ch20.md，人物、时间线、前情提要、简介在 data/ 里，都可以直接在 GitHub 上改。
+ * 正文 ch01.md … ch20.md 和人物、时间线、前情提要、简介（book.json 等）都在仓库根目录，可以直接在 GitHub 上改。
+ * （也认 chapters/、data/ 文件夹：根目录没有时会去那里找。）
  * 网页打开时读取这些文件、排好版，再启动 reader.js、zd.js、features.js。
  * 写法：第一行 “## 第一章　章名”；一段一行（段间空一行）；单独一行 --- 是分节的三个小圆点。
- * 抄录的文书、竹纸、批语（楷体加朱线）按“整段原文”对应 data/book.json 里的 chao 列表；
+ * 抄录的文书、竹纸、批语（楷体加朱线）按“整段原文”对应 book.json 里的 chao 列表；
  * 改了这类段落的字，要把 chao 里同样的那句也改成一样，否则它会按普通段落排（不会白屏）。
  * 任何一个文件没读到或格式写错，就用 index.html 里原来的那份。
  */
@@ -85,9 +86,10 @@
   function get1(f, type) {
     return fetch(f, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(f); return type === "json" ? r.json() : r.text(); });
   }
-  // 先找 chapters/、data/ 文件夹里的；网页上传时文件夹被拆平了，就在根目录找同名文件
+  // 先在根目录找同名文件（仓库现在就是这样放的）；找不到再去 chapters/、data/ 文件夹里找
   function get(f, type) {
-    return get1(f, type).catch(function (e) { var b = f.split("/").pop(); if (b === f) throw e; return get1(b, type); });
+    var b = f.split("/").pop();
+    return get1(b, type).catch(function (e) { if (b === f) throw e; return get1(f, type); });
   }
   function opt(f, type) { return get(f, type).catch(function (e) { if (window.console) console.warn("没读到 " + f + "，用网页里原来的那份。", e); return null; }); }
 
